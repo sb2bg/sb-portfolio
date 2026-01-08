@@ -48,6 +48,7 @@ docker run -p 3000:3000 sb-resume
 4. Optional: Use a process manager or systemd service to auto-restart on reboot
 
 Example nginx config:
+
 ```nginx
 server {
     server_name yourdomain.com;
