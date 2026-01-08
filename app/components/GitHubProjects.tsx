@@ -24,6 +24,14 @@ const projectDescriptions: Record<string, string> = {
   "8bit-auto": "Vintage car matching - 1st place winner at RiverHacks",
 };
 
+function ensureHttps(url: string | null): string | null {
+  if (!url) return null;
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  }
+  return `https://${url}`;
+}
+
 async function getGitHubRepos(): Promise<Repo[]> {
   const res = await fetch(
     "https://api.github.com/users/sb2bg/repos?sort=updated&per_page=30",
@@ -71,7 +79,7 @@ export async function GitHubProjects() {
               </a>
               {repo.homepage && (
                 <a
-                  href={repo.homepage}
+                  href={ensureHttps(repo.homepage) || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="ml-3 text-xs text-[#8a847a] hover:text-[#5c584e] transition-colors"
