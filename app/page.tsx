@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { GitHubProjects } from "./components/GitHubProjects";
 
 export default function Home() {
@@ -24,6 +25,12 @@ export default function Home() {
             >
               github.com/sb2bg
             </a>
+            <Link
+              href="/blog"
+              className="text-[#6b5b4d] hover:text-[#3d3a35] underline underline-offset-4 transition-colors"
+            >
+              blog
+            </Link>
           </div>
         </section>
 
@@ -37,6 +44,23 @@ export default function Home() {
             programming, and building tools that make a difference. Experienced
             with Rust, Zig, TypeScript, Java, and more.
           </p>
+        </section>
+
+        {/* Experience */}
+        <section className="mb-12">
+          <h2 className="text-sm uppercase tracking-widest text-[#8a847a] mb-4 border-b border-[#d9d3c7] pb-2">
+            Experience
+          </h2>
+          <div>
+            <div className="flex justify-between items-start mb-1">
+              <h3 className="font-semibold text-[#2c2a26]">Visa</h3>
+              <span className="text-sm text-[#7a756a]">May – Jul 2026</span>
+            </div>
+            <p className="text-sm text-[#5c584e] mb-2">
+              Software Engineering Intern · CMS (Commercial & Money Transfer Solutions) · B2B Connect
+            </p>
+            <p className="text-sm text-[#7a756a] italic">Incoming</p>
+          </div>
         </section>
 
         {/* Projects - Dynamic from GitHub */}
@@ -68,7 +92,7 @@ export default function Home() {
               "Linux",
               "Git",
               "PostgreSQL",
-              "Supabase",
+              "Firebase",
             ].map((skill) => (
               <span
                 key={skill}

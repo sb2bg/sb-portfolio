@@ -36,6 +36,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# sqlite data
+/data
+
+# local resume sources (move out of repo later)
+/resume-src
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
