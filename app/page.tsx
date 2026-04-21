@@ -51,16 +51,33 @@ export default function Home() {
           <h2 className="text-sm uppercase tracking-widest text-[#8a847a] mb-4 border-b border-[#d9d3c7] pb-2">
             Experience
           </h2>
-          <div>
+          <div className="mb-8">
             <div className="flex justify-between items-start mb-1">
               <h3 className="font-semibold text-[#2c2a26]">Visa</h3>
-              <span className="text-sm text-[#7a756a]">May – Jul 2026</span>
+              <span className="text-sm text-[#7a756a]">May - Jul 2026</span>
             </div>
             <p className="text-sm text-[#5c584e] mb-2">
               Software Engineering Intern · CMS (Commercial & Money Transfer
               Solutions)
             </p>
             <p className="text-sm text-[#7a756a] italic">Incoming</p>
+          </div>
+          <div className="mb-8">
+            <div>
+              <div className="flex justify-between items-start mb-1">
+                <h3 className="font-semibold text-[#2c2a26]">
+                  UT Austin Computer Science
+                </h3>
+                <span className="text-sm text-[#7a756a]">Jan - May 2026</span>
+              </div>
+              <p className="text-sm text-[#5c584e]">
+                Undergraduate Course Assistant · Operating Systems (CS 439)
+              </p>
+              <p className="text-sm text-[#7a756a] italic">
+                Assist with labs, grading, and office hours for an undergraduate
+                OS course focused on Pintos and C.
+              </p>
+            </div>
           </div>
         </section>
 
