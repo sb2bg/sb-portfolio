@@ -57,7 +57,8 @@ export default function Home() {
               <span className="text-sm text-[#7a756a]">May – Jul 2026</span>
             </div>
             <p className="text-sm text-[#5c584e] mb-2">
-              Software Engineering Intern · CMS (Commercial & Money Transfer Solutions) · B2B Connect
+              Software Engineering Intern · CMS (Commercial & Money Transfer
+              Solutions)
             </p>
             <p className="text-sm text-[#7a756a] italic">Incoming</p>
           </div>
