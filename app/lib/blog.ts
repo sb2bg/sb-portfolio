@@ -94,7 +94,10 @@ export async function getAllSlugs(): Promise<string[]> {
 
 export function formatDate(date: string): string {
   if (!date) return "";
-  const d = new Date(date);
+  const parts = date.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  const d = parts
+    ? new Date(Number(parts[1]), Number(parts[2]) - 1, Number(parts[3]))
+    : new Date(date);
   if (Number.isNaN(d.getTime())) return date;
   return d.toLocaleDateString("en-US", {
     year: "numeric",

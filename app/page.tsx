@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { GitHubProjects } from "./components/GitHubProjects";
+import { formatDate, getAllPosts } from "./lib/blog";
 
-export default function Home() {
+export default async function Home() {
+  const [latestPost] = await getAllPosts();
+
   return (
     <div className="min-h-screen bg-[#f5f0e8] text-[#3d3a35] font-mono">
       <main className="max-w-2xl mx-auto px-6 py-16">
@@ -33,6 +36,27 @@ export default function Home() {
             </Link>
           </div>
         </section>
+
+        {latestPost && (
+          <section className="mb-12">
+            <h2 className="text-sm uppercase tracking-widest text-[#8a847a] mb-4 border-b border-[#d9d3c7] pb-2">
+              Latest Post
+            </h2>
+            <Link href={`/blog/${latestPost.slug}`} className="group block">
+              <div className="flex items-baseline justify-between gap-4 mb-1">
+                <h3 className="font-semibold text-[#2c2a26] group-hover:text-[#6b5b4d] underline underline-offset-4 decoration-transparent group-hover:decoration-[#6b5b4d] transition-colors">
+                  {latestPost.title}
+                </h3>
+                <time className="text-xs text-[#8a847a] shrink-0">
+                  {formatDate(latestPost.date)}
+                </time>
+              </div>
+              <p className="text-sm text-[#6b655a] leading-relaxed">
+                {latestPost.description}
+              </p>
+            </Link>
+          </section>
+        )}
 
         {/* About */}
         <section className="mb-12">
