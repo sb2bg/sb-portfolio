@@ -9,20 +9,19 @@ interface Repo {
   fork: boolean;
 }
 
-// Project descriptions for repos that don't have them on GitHub
-const projectDescriptions: Record<string, string> = {
-  walrus: "Dynamically typed programming language written in Rust",
-  sykora: "Strong UCI chess engine written in Zig",
-  "hues-who": "Flag guessing game built with TypeScript",
-  "gamepigeon-solver":
-    "Solver for GamePigeon word games, connect 4, and tic-tac-toe",
-  CustomDeathMessages:
-    "Spigot plugin with 22k+ downloads for customizable death messages",
-  "next-minesweeper": "Minesweeper game built with Next.js",
-  roommaite: "Roommate management app built with Flutter for HackTX",
-  jordan_java: "App to teach special education students financial skills",
-  "8bit-auto": "Vintage car matching - 1st place winner at RiverHacks",
-};
+// Ordered allowlist: projects render in this order.
+// Descriptions come from each repo's GitHub "About" field —
+// to change a description, edit it on GitHub, not here.
+const featuredRepos: string[] = [
+  "sykora",
+  "walrus",
+  "marionette",
+  "crucible",
+  "CustomDeathMessages",
+  "nibble",
+  "PolyForge",
+  "8bit-auto",
+];
 
 function ensureHttps(url: string | null): string | null {
   if (!url) return null;
@@ -34,10 +33,10 @@ function ensureHttps(url: string | null): string | null {
 
 async function getGitHubRepos(): Promise<Repo[]> {
   const res = await fetch(
-    "https://api.github.com/users/sb2bg/repos?sort=updated&per_page=30",
+    "https://api.github.com/users/sb2bg/repos?sort=updated&per_page=100",
     {
       next: { revalidate: 3600 }, // Revalidate every hour
-    }
+    },
   );
 
   if (!res.ok) {
@@ -45,11 +44,11 @@ async function getGitHubRepos(): Promise<Repo[]> {
   }
 
   const repos: Repo[] = await res.json();
+  const byName = new Map(repos.map((r) => [r.name, r]));
 
-  // Filter to only include repos in projectDescriptions
-  return repos
-    .filter((repo) => repo.name in projectDescriptions)
-    .sort((a, b) => b.stargazers_count - a.stargazers_count);
+  return featuredRepos
+    .map((name) => byName.get(name))
+    .filter((r): r is Repo => r !== undefined);
 }
 
 export async function GitHubProjects() {
@@ -87,11 +86,11 @@ export async function GitHubProjects() {
                   [live →]
                 </a>
               )}
-              <p className="text-sm text-[#6b655a] mt-1">
-                {repo.description ||
-                  projectDescriptions[repo.name] ||
-                  "No description"}
-              </p>
+              {repo.description && (
+                <p className="text-sm text-[#6b655a] mt-1">
+                  {repo.description}
+                </p>
+              )}
             </div>
             <div className="flex items-center gap-3 text-xs text-[#8a847a] shrink-0">
               {repo.language && (
