@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["better-sqlite3"],
   outputFileTracingIncludes: {
     "/api/**/*": ["./node_modules/better-sqlite3/build/Release/*.node"],
+    "/*": ["./content/**/*"],
   },
 };
 

@@ -25,7 +25,20 @@ export interface Post extends PostMeta {
 }
 
 async function listFiles(): Promise<string[]> {
-  const entries = await fs.readdir(BLOG_DIR);
+  let entries: string[];
+  try {
+    entries = await fs.readdir(BLOG_DIR);
+  } catch (error) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      error.code === "ENOENT"
+    ) {
+      return [];
+    }
+    throw error;
+  }
   return entries.filter((f) => f.endsWith(".md"));
 }
 
