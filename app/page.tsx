@@ -94,7 +94,7 @@ export default async function Home() {
                 </h3>
                 <span className="text-sm text-[#7a756a]">Jan - May 2026</span>
               </div>
-              <p className="text-sm text-[#5c584e]">
+              <p className="text-sm text-[#5c584e] mb-2">
                 Undergraduate Course Assistant · Operating Systems (CS 439)
               </p>
               <p className="text-sm text-[#7a756a] italic">
