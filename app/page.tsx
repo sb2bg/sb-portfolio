@@ -64,9 +64,9 @@ export default async function Home() {
             About
           </h2>
           <p className="leading-relaxed text-[#4a473f]">
-            Software developer passionate about programming languages, systems
-            programming, and building tools that make a difference. Experienced
-            with Rust, Zig, TypeScript, Java, and more.
+            Student & software developer passionate about programming languages,
+            systems programming, and building tools that make a difference.
+            Experienced with Rust, Zig, TypeScript, Java, and more.
           </p>
         </section>
 
