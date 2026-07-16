@@ -9,7 +9,7 @@ interface Repo {
   fork: boolean;
 }
 
-// Ordered allowlist: projects render in this order.
+// Featured allowlist: projects render from most to least starred.
 // Descriptions come from each repo's GitHub "About" field —
 // to change a description, edit it on GitHub, not here.
 const featuredRepos: string[] = [
@@ -48,7 +48,8 @@ async function getGitHubRepos(): Promise<Repo[]> {
 
   return featuredRepos
     .map((name) => byName.get(name))
-    .filter((r): r is Repo => r !== undefined);
+    .filter((r): r is Repo => r !== undefined)
+    .sort((a, b) => b.stargazers_count - a.stargazers_count);
 }
 
 export async function GitHubProjects() {

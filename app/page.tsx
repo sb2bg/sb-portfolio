@@ -81,10 +81,11 @@ export default async function Home() {
               <span className="text-sm text-[#7a756a]">May - Jul 2026</span>
             </div>
             <p className="text-sm text-[#5c584e] mb-2">
-              Software Engineering Intern · CMS (Commercial & Money Transfer
-              Solutions)
+              Software Engineering Intern
             </p>
-            <p className="text-sm text-[#7a756a] italic">Incoming</p>
+            <p className="text-sm text-[#7a756a] italic">
+              Commercial &amp; Money Movement Solutions (CMS PD)
+            </p>
           </div>
           <div className="mb-8">
             <div>

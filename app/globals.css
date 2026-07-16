@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f5f0e8;
-  --foreground: #3d3a35;
+  --background: #f7f2e9;
+  --foreground: #292621;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @theme inline {
@@ -21,38 +25,52 @@ body {
 
 /* Blog post prose styles */
 .prose-blog {
-  color: #4a473f;
-  line-height: 1.75;
-  font-size: 0.95rem;
+  color: #3f3a33;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  letter-spacing: -0.008em;
 }
 
 .prose-blog > * + * {
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.prose-blog > p:first-child {
+  color: #292621;
+  font-size: 1.24rem;
+  line-height: 1.72;
 }
 
 .prose-blog h2 {
-  font-size: 1.35rem;
+  color: #292621;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 1.65rem;
   font-weight: 700;
-  color: #2c2a26;
-  margin-top: 2.75rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #d9d3c7;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.035em;
+  line-height: 1.25;
+  margin-top: 3.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #d8cfbf;
+  scroll-margin-top: 5rem;
 }
 
 .prose-blog h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #2c2a26;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
+  color: #292621;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  scroll-margin-top: 5rem;
 }
 
 .prose-blog h4 {
   font-size: 1rem;
   font-weight: 600;
-  color: #2c2a26;
+  color: #292621;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
 }
@@ -63,24 +81,24 @@ body {
 }
 
 .prose-blog .heading-anchor:hover {
-  color: #6b5b4d;
+  color: #a64b32;
 }
 
 .prose-blog p {
-  color: #4a473f;
+  color: #3f3a33;
 }
 
 .prose-blog strong {
-  color: #2c2a26;
+  color: #292621;
   font-weight: 700;
 }
 
 .prose-blog em {
-  color: #3d3a35;
+  color: #4d463c;
 }
 
 .prose-blog a {
-  color: #6b5b4d;
+  color: #a64b32;
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
@@ -88,13 +106,13 @@ body {
 }
 
 .prose-blog a:hover {
-  color: #3d3a35;
+  color: #7f3522;
 }
 
 .prose-blog ul,
 .prose-blog ol {
   padding-left: 1.5rem;
-  color: #4a473f;
+  color: #3f3a33;
 }
 
 .prose-blog ul {
@@ -106,7 +124,7 @@ body {
 }
 
 .prose-blog li {
-  margin-top: 0.4rem;
+  margin-top: 0.55rem;
 }
 
 .prose-blog li > p {
@@ -114,40 +132,42 @@ body {
 }
 
 .prose-blog li::marker {
-  color: #8a847a;
+  color: #a64b32;
 }
 
 .prose-blog blockquote {
-  border-left: 3px solid #d9d3c7;
-  padding-left: 1rem;
-  color: #6b655a;
+  border-left: 3px solid #a64b32;
+  padding-left: 1.25rem;
+  color: #625b50;
   font-style: italic;
 }
 
 .prose-blog hr {
   border: none;
-  border-top: 1px solid #d9d3c7;
+  border-top: 1px solid #d8cfbf;
   margin: 2.5rem 0;
 }
 
 .prose-blog code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
-  background: #e8e2d6;
-  color: #3d3a35;
-  padding: 0.1rem 0.35rem;
+  background: #eee3d4;
+  color: #8a3d27;
+  padding: 0.12rem 0.36rem;
   border-radius: 0.25rem;
   font-size: 0.85em;
 }
 
 .prose-blog pre {
-  background: #ede7d9;
-  border: 1px solid #d9d3c7;
-  border-radius: 0.375rem;
-  padding: 1rem;
+  background: #282621;
+  border: 1px solid #3c3831;
+  border-radius: 0.5rem;
+  box-shadow: 0 14px 35px rgb(41 36 29 / 0.12);
+  color: #f7f2e9;
+  padding: 1.15rem 1.25rem;
   overflow-x: auto;
-  font-size: 0.8rem;
-  line-height: 1.6;
+  font-size: 0.82rem;
+  line-height: 1.65;
 }
 
 .prose-blog pre code {
@@ -170,18 +190,40 @@ body {
 
 .prose-blog th,
 .prose-blog td {
-  border: 1px solid #d9d3c7;
+  border: 1px solid #d8cfbf;
   padding: 0.5rem 0.75rem;
   text-align: left;
 }
 
 .prose-blog th {
-  background: #e8e2d6;
-  color: #2c2a26;
+  background: #eee6d8;
+  color: #292621;
   font-weight: 600;
 }
 
 .prose-blog img {
   border-radius: 0.375rem;
-  border: 1px solid #d9d3c7;
+  border: 1px solid #d8cfbf;
+}
+
+@media (max-width: 639px) {
+  .prose-blog {
+    font-size: 1.0625rem;
+    line-height: 1.78;
+  }
+
+  .prose-blog > p:first-child {
+    font-size: 1.14rem;
+  }
+
+  .prose-blog h2 {
+    font-size: 1.45rem;
+    margin-top: 3.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }

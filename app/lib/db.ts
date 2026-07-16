@@ -6,7 +6,7 @@ import Database from "better-sqlite3";
 
 const DB_PATH =
   process.env.DB_PATH ?? path.join(process.cwd(), "data", "blog.db");
-const IP_HASH_SALT = process.env.IP_HASH_SALT ?? "";
+const DEV_IP_HASH_SALT = crypto.randomBytes(32).toString("hex");
 
 let _db: Database.Database | null = null;
 
@@ -30,6 +30,13 @@ function openDb(): Database.Database {
       created  INTEGER NOT NULL DEFAULT (strftime('%s','now')),
       PRIMARY KEY (slug, ip_hash)
     );
+
+    CREATE TABLE IF NOT EXISTS rate_limits (
+      bucket        TEXT NOT NULL,
+      window_start  INTEGER NOT NULL,
+      requests      INTEGER NOT NULL DEFAULT 1,
+      PRIMARY KEY (bucket, window_start)
+    );
   `);
 
   return db;
@@ -41,7 +48,49 @@ export function db(): Database.Database {
 }
 
 export function hashIp(ip: string): string {
-  return crypto.createHash("sha256").update(IP_HASH_SALT + ip).digest("hex");
+  const configuredSalt = process.env.IP_HASH_SALT?.trim();
+  if (!configuredSalt && process.env.NODE_ENV === "production") {
+    throw new Error("IP_HASH_SALT must be set in production");
+  }
+  const salt = configuredSalt || DEV_IP_HASH_SALT;
+  return crypto.createHash("sha256").update(salt + ip).digest("hex");
+}
+
+export interface RateLimitResult {
+  allowed: boolean;
+  retryAfter: number;
+}
+
+export function consumeRateLimit(
+  bucket: string,
+  limit: number,
+  windowSeconds: number,
+): RateLimitResult {
+  const now = Math.floor(Date.now() / 1000);
+  const windowStart = now - (now % windowSeconds);
+
+  return db().transaction(() => {
+    const row = db()
+      .prepare(
+        `
+          INSERT INTO rate_limits (bucket, window_start, requests)
+          VALUES (?, ?, 1)
+          ON CONFLICT(bucket, window_start)
+          DO UPDATE SET requests = requests + 1
+          RETURNING requests
+        `,
+      )
+      .get(bucket, windowStart) as { requests: number };
+
+    db()
+      .prepare("DELETE FROM rate_limits WHERE window_start < ?")
+      .run(windowStart - windowSeconds);
+
+    return {
+      allowed: row.requests <= limit,
+      retryAfter: Math.max(1, windowStart + windowSeconds - now),
+    };
+  })();
 }
 
 export interface Stats {

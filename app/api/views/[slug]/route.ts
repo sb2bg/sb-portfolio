@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { getAllSlugs } from "../../../lib/blog";
-import { incrementViews, getStats } from "../../../lib/db";
-import { isValidSlugFormat } from "../../../lib/request";
+import {
+  consumeRateLimit,
+  getStats,
+  hashIp,
+  incrementViews,
+} from "../../../lib/db";
+import { getClientIp, isValidSlugFormat } from "../../../lib/request";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +23,19 @@ export async function POST(_req: Request, { params }: Ctx) {
   if (!known.includes(slug)) {
     return NextResponse.json({ error: "unknown slug" }, { status: 404 });
   }
+
+  const ipHash = hashIp(await getClientIp());
+  const rateLimit = consumeRateLimit(`views:${ipHash}`, 30, 60);
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: "rate limit exceeded" },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rateLimit.retryAfter) },
+      },
+    );
+  }
+
   const views = incrementViews(slug);
   const { likes } = getStats(slug);
   return NextResponse.json({ views, likes });

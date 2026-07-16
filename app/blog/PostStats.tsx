@@ -76,12 +76,12 @@ export function PostStats({ slug }: Props) {
   }
 
   return (
-    <div className="flex items-center gap-4 text-xs text-[#8a847a]">
+    <div className="flex items-center gap-3 font-mono text-[0.7rem] text-[#968c7d]">
       <span aria-live="polite">
         {stats ? stats.views.toLocaleString() : "—"} view
         {stats?.views === 1 ? "" : "s"}
       </span>
-      <span className="text-[#c8c1b3]">·</span>
+      <span className="text-[#c6bbaa]">·</span>
       <button
         type="button"
         onClick={onLike}
@@ -90,8 +90,8 @@ export function PostStats({ slug }: Props) {
         aria-label={liked ? "Unlike post" : "Like post"}
         className={`inline-flex items-center gap-1.5 rounded px-2 py-1 transition-colors ${
           liked
-            ? "text-[#a04545] cursor-default"
-            : "hover:text-[#3d3a35] hover:bg-[#ede7d9] cursor-pointer"
+            ? "text-[#a64b32] cursor-default"
+            : "hover:text-[#a64b32] hover:bg-[#eee6d8] cursor-pointer"
         } disabled:cursor-default`}
       >
         <Heart filled={liked} />

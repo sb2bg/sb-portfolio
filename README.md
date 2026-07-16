@@ -8,7 +8,7 @@ Simple text-based resume with a tan theme. Pulls my projects directly from the G
 
 ## Tech Stack
 
-- Next.js 15
+- Next.js 16
 - TypeScript
 - Tailwind CSS
 
@@ -25,10 +25,13 @@ yarn dev
 Build and run with Docker Compose:
 
 ```bash
+printf 'IP_HASH_SALT=%s\n' "$(openssl rand -hex 32)" > .env
 docker compose up -d
 ```
 
-The site will be available at `http://localhost:3000`.
+The site will be available at `http://localhost:3001`. The port is bound to
+localhost so the trusted proxy header cannot be spoofed from the public
+internet.
 
 ### Manual Docker
 
@@ -37,7 +40,9 @@ The site will be available at `http://localhost:3000`.
 docker build -t sb-resume .
 
 # Run
-docker run -p 3000:3000 sb-resume
+docker run -p 3000:3000 \
+  -e IP_HASH_SALT="$(openssl rand -hex 32)" \
+  sb-resume
 ```
 
 ### Server Deployment
@@ -58,6 +63,7 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
         proxy_cache_bypass $http_upgrade;
     }
 }
@@ -65,4 +71,12 @@ server {
 
 ## Notes
 
-Projects displayed are controlled by the `projectDescriptions` object in `app/components/GitHubProjects.tsx`. The site fetches from GitHub hourly and shows only the repos I've explicitly included.
+Projects displayed are controlled by the `featuredRepos` allowlist in
+`app/components/GitHubProjects.tsx`. The site fetches from GitHub hourly,
+uses each repository's GitHub description, and sorts the selected projects by
+star count.
+
+Blog likes and views use hashed client IPs for deduplication and rate limiting.
+Production requires `IP_HASH_SALT`. Forwarded IP headers are ignored unless
+`TRUSTED_PROXY_HEADER` explicitly names one; the Compose setup trusts
+`x-real-ip` from the local reverse proxy.

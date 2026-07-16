@@ -2,12 +2,13 @@ services:
   resume:
     build: .
     ports:
-      - "3001:3000"
+      - "127.0.0.1:3001:3000"
     restart: unless-stopped
     environment:
-      - NODE_ENV=production
-      - DB_PATH=/app/data/blog.db
-      - IP_HASH_SALT=${IP_HASH_SALT:-change-me-set-in-env}
+      NODE_ENV: production
+      DB_PATH: /app/data/blog.db
+      IP_HASH_SALT: "${IP_HASH_SALT:?Set IP_HASH_SALT in .env}"
+      TRUSTED_PROXY_HEADER: "${TRUSTED_PROXY_HEADER:-x-real-ip}"
     volumes:
       - resume-data:/app/data
 

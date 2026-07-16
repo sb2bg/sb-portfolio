@@ -18,10 +18,20 @@ export interface PostMeta {
   title: string;
   description: string;
   date: string;
+  projectUrl?: string;
+  projectLabel?: string;
+}
+
+export interface PostHeading {
+  level: 2 | 3;
+  id: string;
+  text: string;
 }
 
 export interface Post extends PostMeta {
   html: string;
+  headings: PostHeading[];
+  readingMinutes: number;
 }
 
 async function listFiles(): Promise<string[]> {
@@ -47,7 +57,19 @@ function parseFrontmatter(slug: string, raw: string) {
   const title = String(data.title ?? slug);
   const description = String(data.description ?? "");
   const date = String(data.date ?? "");
-  return { slug, title, description, date, content };
+  const projectUrl = data.projectUrl ? String(data.projectUrl) : undefined;
+  const projectLabel = data.projectLabel
+    ? String(data.projectLabel)
+    : undefined;
+  return {
+    slug,
+    title,
+    description,
+    date,
+    projectUrl,
+    projectLabel,
+    content,
+  };
 }
 
 async function renderMarkdown(content: string): Promise<string> {
@@ -62,12 +84,48 @@ async function renderMarkdown(content: string): Promise<string> {
       properties: { className: ["heading-anchor"] },
     })
     .use(rehypePrettyCode, {
-      theme: "github-light-default",
+      theme: "github-dark-default",
       keepBackground: false,
     })
     .use(rehypeStringify, { allowDangerousHtml: true })
     .process(content);
   return String(file);
+}
+
+function decodeHtml(value: string): string {
+  const named: Record<string, string> = {
+    amp: "&",
+    apos: "'",
+    gt: ">",
+    lt: "<",
+    quot: '"',
+  };
+
+  return value.replace(/&(#x[\da-f]+|#\d+|\w+);/gi, (entity, code: string) => {
+    if (code.startsWith("#x")) {
+      return String.fromCodePoint(Number.parseInt(code.slice(2), 16));
+    }
+    if (code.startsWith("#")) {
+      return String.fromCodePoint(Number.parseInt(code.slice(1), 10));
+    }
+    return named[code] ?? entity;
+  });
+}
+
+function extractHeadings(html: string): PostHeading[] {
+  return Array.from(
+    html.matchAll(/<h([23]) id="([^"]+)">([\s\S]*?)<\/h\1>/g),
+    (match) => ({
+      level: Number(match[1]) as 2 | 3,
+      id: match[2],
+      text: decodeHtml(match[3].replace(/<[^>]+>/g, "")),
+    }),
+  );
+}
+
+function estimateReadingMinutes(content: string): number {
+  const words = content.match(/[\p{L}\p{N}_'-]+/gu)?.length ?? 0;
+  return Math.max(1, Math.ceil(words / 220));
 }
 
 export async function getAllPosts(): Promise<PostMeta[]> {
@@ -76,8 +134,9 @@ export async function getAllPosts(): Promise<PostMeta[]> {
     files.map(async (filename) => {
       const slug = filename.replace(/\.md$/, "");
       const raw = await fs.readFile(path.join(BLOG_DIR, filename), "utf-8");
-      const { title, description, date } = parseFrontmatter(slug, raw);
-      return { slug, title, description, date };
+      const { title, description, date, projectUrl, projectLabel } =
+        parseFrontmatter(slug, raw);
+      return { slug, title, description, date, projectUrl, projectLabel };
     })
   );
   return posts.sort((a, b) => (a.date < b.date ? 1 : -1));
@@ -93,7 +152,11 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       title: parsed.title,
       description: parsed.description,
       date: parsed.date,
+      projectUrl: parsed.projectUrl,
+      projectLabel: parsed.projectLabel,
       html,
+      headings: extractHeadings(html),
+      readingMinutes: estimateReadingMinutes(parsed.content),
     };
   } catch {
     return null;

@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { getAllSlugs } from "../../../lib/blog";
-import { addLike, getStats, hashIp } from "../../../lib/db";
+import {
+  addLike,
+  consumeRateLimit,
+  getStats,
+  hashIp,
+} from "../../../lib/db";
 import { getClientIp, isValidSlugFormat } from "../../../lib/request";
 
 export const dynamic = "force-dynamic";
@@ -20,7 +25,19 @@ export async function POST(_req: Request, { params }: Ctx) {
   }
 
   const ip = await getClientIp();
-  const { likes, alreadyLiked } = addLike(slug, hashIp(ip));
+  const ipHash = hashIp(ip);
+  const rateLimit = consumeRateLimit(`likes:${ipHash}`, 10, 60);
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: "rate limit exceeded" },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rateLimit.retryAfter) },
+      },
+    );
+  }
+
+  const { likes, alreadyLiked } = addLike(slug, ipHash);
   const { views } = getStats(slug);
   return NextResponse.json({ views, likes, alreadyLiked });
 }
