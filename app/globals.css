@@ -27,19 +27,13 @@ body {
 .prose-blog {
   color: #3f3a33;
   font-family: var(--font-geist-sans), system-ui, sans-serif;
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   line-height: 1.8;
   letter-spacing: -0.008em;
 }
 
 .prose-blog > * + * {
   margin-top: 1.5rem;
-}
-
-.prose-blog > p:first-child {
-  color: #292621;
-  font-size: 1.24rem;
-  line-height: 1.72;
 }
 
 .prose-blog h2 {
@@ -210,10 +204,6 @@ body {
   .prose-blog {
     font-size: 1.0625rem;
     line-height: 1.78;
-  }
-
-  .prose-blog > p:first-child {
-    font-size: 1.14rem;
   }
 
   .prose-blog h2 {

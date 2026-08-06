@@ -28,6 +28,12 @@ export default async function Home() {
             >
               github.com/sb2bg
             </a>
+            <a
+              href="mailto:sullivan@cs.utexas.edu"
+              className="text-[#6b5b4d] hover:text-[#3d3a35] underline underline-offset-4 transition-colors"
+            >
+              sullivan@cs.utexas.edu
+            </a>
             <Link
               href="/blog"
               className="text-[#6b5b4d] hover:text-[#3d3a35] underline underline-offset-4 transition-colors"
