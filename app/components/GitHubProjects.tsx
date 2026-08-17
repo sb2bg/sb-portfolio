@@ -18,8 +18,8 @@ const featuredRepos: string[] = [
   "marionette",
   "crucible",
   "CustomDeathMessages",
-  "nibble",
-  "PolyForge",
+  "bombelli",
+  "Rosa",
   "8bit-auto",
 ];
 

@@ -83,6 +83,18 @@ export default async function Home() {
           </h2>
           <div className="mb-8">
             <div className="flex justify-between items-start mb-1">
+              <h3 className="font-semibold text-[#2c2a26]">Citadel</h3>
+              <span className="text-sm text-[#7a756a]">Summer 2027</span>
+            </div>
+            <p className="text-sm text-[#5c584e] mb-2">
+              Incoming Software Engineering Intern
+            </p>
+            <p className="text-sm text-[#7a756a] italic">
+              Post-Trade Engineering
+            </p>
+          </div>
+          <div className="mb-8">
+            <div className="flex justify-between items-start mb-1">
               <h3 className="font-semibold text-[#2c2a26]">Visa</h3>
               <span className="text-sm text-[#7a756a]">May - Jul 2026</span>
             </div>
