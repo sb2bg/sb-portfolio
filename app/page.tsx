@@ -111,7 +111,9 @@ export default async function Home() {
                 <h3 className="font-semibold text-[#2c2a26]">
                   UT Austin Computer Science
                 </h3>
-                <span className="text-sm text-[#7a756a]">Jan - May 2026</span>
+                <span className="text-sm text-[#7a756a]">
+                  Jan 2026 - Present
+                </span>
               </div>
               <p className="text-sm text-[#5c584e] mb-2">
                 Undergraduate Course Assistant · Operating Systems (CS 439)
